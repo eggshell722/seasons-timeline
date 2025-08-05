@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>四季时间轴</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      scroll-behavior: smooth;
+      overflow-y: scroll;
+    }
+
+    /* 主容器设置垂直滑动与吸附 */
+    .seasons-container {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      height: 100vh;
+    }
+
+    .season {
+      scroll-snap-align: start;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1s ease;
+      opacity: 0.2;
+    }
+
+    .season.visible {
+      opacity: 1;
+    }
+
+    .season h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .season img {
+      width: 300px;
+      height: 200px;
+      object-fit: cover;
+      margin: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.5s ease;
+    }
+
+    .season img:hover {
+      transform: scale(1.05);
+    }
+
+    /* 时间轴导航栏 */
+    .timeline-nav {
+      position: fixed;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 1000;
+    }
+
+    .timeline-nav a {
+      padding: 10px 16px;
+      border-left: 4px solid #aaa;
+      text-decoration: none;
+      color: #333;
+      transition: all 0.3s;
+      background-color: white;
+      border-radius: 0 5px 5px 0;
+    }
+
+    .timeline-nav a.active {
+      border-left-color: #ff5722;
+      font-weight: bold;
+      background-color: #ffece4;
+    }
+
+    /* 各季节颜色背景 */
+    .spring { background: #e0f7fa; }
+    .summer { background: #fff9c4; }
+    .autumn { background: #ffe0b2; }
+    .winter { background: #e1f5fe; }
+/* 箭头按钮样式 */
+/* 箭头导航栏样式：带文字 */
+.timeline-nav.arrow-style {
+  position: fixed;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 1000;
+}
+
+.arrow-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 2px solid #aaa;
+  background-color: white;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.3s;
+  font-weight: 500;
+  font-size: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.arrow-btn:hover {
+  border-color: #ff5722;
+  background-color: #fff3e0;
+}
+
+.arrow-btn.active {
+  border-color: #ff5722;
+  background-color: #ffe0b2;
+  font-weight: bold;
+}
+
+.arrow-btn svg {
+  transform: rotate(90deg);
+  transition: transform 0.3s ease;
+}
+
+.arrow-btn span {
+  pointer-events: none;
+}
+
+.arrow-btn[title="春"] svg { transform: rotate(90deg); }
+.arrow-btn[title="夏"] svg { transform: rotate(90deg); }
+.arrow-btn[title="秋"] svg { transform: rotate(90deg); }
+.arrow-btn[title="冬"] svg { transform: rotate(90deg); }
+
+  </style>
+</head>
+<body>
+
+<nav class="timeline-nav arrow-style">
+  <a href="#spring" id="link-spring" class="arrow-btn" title="春">
+    <svg width="24" height="24" viewBox="0 0 24 24">
+      <path fill="#333" d="M12 2L6 12h12L12 2zm0 6.5l2.5 4h-5L12 8.5z"/>
+    </svg>
+    <span>春</span>
+  </a>
+  <a href="#summer" id="link-summer" class="arrow-btn" title="夏">
+    <svg width="24" height="24" viewBox="0 0 24 24">
+      <path fill="#333" d="M12 2L6 12h12L12 2zm0 6.5l2.5 4h-5L12 8.5z"/>
+    </svg>
+    <span>夏</span>
+  </a>
+  <a href="#autumn" id="link-autumn" class="arrow-btn" title="秋">
+    <svg width="24" height="24" viewBox="0 0 24 24">
+      <path fill="#333" d="M12 2L6 12h12L12 2zm0 6.5l2.5 4h-5L12 8.5z"/>
+    </svg>
+    <span>秋</span>
+  </a>
+  <a href="#winter" id="link-winter" class="arrow-btn" title="冬">
+    <svg width="24" height="24" viewBox="0 0 24 24">
+      <path fill="#333" d="M12 2L6 12h12L12 2zm0 6.5l2.5 4h-5L12 8.5z"/>
+    </svg>
+    <span>冬</span>
+  </a>
+</nav>
+
+<!-- 四季内容容器 -->
+<div class="seasons-container">
+  <section class="season spring" id="spring">
+    <h1>春</h1>
+    <p>春天是万物复苏的季节，百花齐放，生机勃勃。</p>
+    <img src="https://source.unsplash.com/300x200/?spring,flower" />
+    <img src="https://source.unsplash.com/300x200/?cherry-blossom" />
+  </section>
+
+  <section class="season summer" id="summer">
+    <h1>夏</h1>
+    <p>夏天阳光炽热，是绿树成荫与欢笑的季节。</p>
+    <img src="https://source.unsplash.com/300x200/?summer,beach" />
+    <img src="https://source.unsplash.com/300x200/?ice-cream" />
+  </section>
+
+  <section class="season autumn" id="autumn">
+    <h1>秋</h1>
+    <p>秋天金风送爽，果实累累，是收获的季节。</p>
+    <img src="https://source.unsplash.com/300x200/?autumn,leaves" />
+    <img src="https://source.unsplash.com/300x200/?pumpkin" />
+  </section>
+
+  <section class="season winter" id="winter">
+    <h1>冬</h1>
+    <p>冬天银装素裹，宁静而纯洁。</p>
+    <img src="https://source.unsplash.com/300x200/?winter,snow" />
+    <img src="https://source.unsplash.com/300x200/?snowman" />
+  </section>
+</div>
+
+<!-- JavaScript：处理高亮导航和滑动效果 -->
+<script>
+  const sections = document.querySelectorAll('.season');
+  const navLinks = {
+    spring: document.getElementById('link-spring'),
+    summer: document.getElementById('link-summer'),
+    autumn: document.getElementById('link-autumn'),
+    winter: document.getElementById('link-winter'),
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.id;
+      if (entry.isIntersecting) {
+        // 设置内容透明度
+        entry.target.classList.add('visible');
+        // 设置导航高亮
+        for (let key in navLinks) {
+          navLinks[key].classList.remove('active');
+        }
+        navLinks[id].classList.add('active');
+      }
+    });
+  }, { threshold: 0.6 });
+
+  sections.forEach(section => {
+    observer.observe(section);
+  });
+</script>
+</body>
+</html>
